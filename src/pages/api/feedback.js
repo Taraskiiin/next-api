@@ -2,12 +2,13 @@ import fs from 'fs';
 import path from 'path';
 
 function handler(req, res) {
-	if (req.method === 'ROST') {
+	console.log(req.body);
+	if (req.method === 'POST') {
 		const email = req.body.email;
 		const feedbackText = req.body.text;
 
 		const newFeedback = {
-			id: new Date().toString(),
+			id: new Date().toISOString(),
 			email: email,
 			text: feedbackText,
 		};
