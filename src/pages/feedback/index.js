@@ -1,8 +1,8 @@
-import { useSate } from 'react';
+import { useState } from 'react';
 import { buildFeedbackPath, extractFeedback } from '@/pages/api/feedback';
 
 function FeedbackPage(props) {
-	const [feedbackData, setFeedbackData] = useSate(null);
+	const [feedbackData, setFeedbackData] = useState();
 	function loadFeedbackHandler(id) {
 		fetch('/api/' + id).then((res) =>
 			res.json().then((data) => {
@@ -11,17 +11,19 @@ function FeedbackPage(props) {
 		);
 	}
 	return (
-		<ul>
-			{props.feedbacks.map((feedback) => (
-				<li key={feedback.id}>
-					<div>{feedback.email}</div>
-					<div>{feedback.text}</div>
-					<button onClick={loadFeedbackHandler.bind(null, item.id)}>
-						Show Details
-					</button>
-				</li>
-			))}
-		</ul>
+		<>
+			{feedbackData && <p>{feedbackData.text}</p>}
+			<ul>
+				{props.feedbacks.map((feedback) => (
+					<li key={feedback.id}>
+						<div>{feedback.email}</div>
+						<button onClick={loadFeedbackHandler.bind(null, feedback.id)}>
+							Show Details
+						</button>
+					</li>
+				))}
+			</ul>
+		</>
 	);
 }
 
