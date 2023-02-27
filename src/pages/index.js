@@ -1,6 +1,7 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 
 export default function Home() {
+	const [data, setData] = useState([]);
 	const emailRef = useRef();
 	const feedbackRef = useRef();
 
@@ -23,7 +24,13 @@ export default function Home() {
 			},
 		})
 			.then((response) => response.json())
-			.then((data) => console.log(data.message));
+			.then((data) => console.log(data));
+	}
+
+	function handlerLoadData() {
+		fetch('/api/feedback')
+			.then((response) => response.json())
+			.then((data) => setData(data.data));
 	}
 
 	return (
@@ -40,6 +47,17 @@ export default function Home() {
 				</div>
 				<button>Send feedback</button>
 			</form>
+			<hr />
+			<button onClick={handlerLoadData}>Load Feeadback</button>
+			<ul>
+				{data &&
+					data.map((feedback) => (
+						<li key={feedback.id}>
+							<div>{feedback.email}</div>
+							<div>{feedback.text}</div>
+						</li>
+					))}
+			</ul>
 		</>
 	);
 }
